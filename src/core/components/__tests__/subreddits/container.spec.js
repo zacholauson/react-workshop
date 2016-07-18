@@ -64,6 +64,7 @@ describe('SubredditsContainer', function() {
 
       expect(props.name).toEqual(firstSubreddit.display_name);
       expect(props.url).toEqual(firstSubreddit.url);
+      expect(props.isSelected).toEqual(false);
     });
 
     it('can render more than one Subreddit', function() {
@@ -79,6 +80,22 @@ describe('SubredditsContainer', function() {
       const subredditComponents = TestUtils.scryRenderedComponentsWithType(container, Subreddit);
 
       expect(subredditComponents.length).toBe(2);
+    });
+
+    it('passes isSelected as true for the currently selected Subreddit', () => {
+      const subreddits = {
+        currentSubreddit: secondSubreddit.id,
+        subreddits: [
+          { data: firstSubreddit },
+          { data: secondSubreddit },
+        ]
+      };
+
+      container.setState({ subreddits: subreddits });
+
+      const subredditComponents = TestUtils.scryRenderedComponentsWithType(container, Subreddit);
+
+      expect(subredditComponents[1].props.isSelected).toEqual(true);
     });
   });
 });

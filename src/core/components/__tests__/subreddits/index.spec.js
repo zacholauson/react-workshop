@@ -5,48 +5,48 @@ const ReactDOM = require('react-dom');
 const TestUtils = require('react-addons-test-utils');
 
 const ListingsAction = require('../../../actions/listings');
+const SubredditsAction = require('../../../actions/subreddits');
 const Subreddit = require('../../subreddits');
 
 describe('Subreddit', function() {
-  it('displays its name', function() {
-    const subreddit = {
-      id: 'someKey',
-      name: 'someName',
-      url: 'someUrl'
-    };
+  const subreddit = {
+    id: 'someId',
+    name: 'someName',
+    url: 'someUrl'
+  };
 
-    const subredditComponent = TestUtils.renderIntoDocument(
+  var subredditComponent;
+  var subredditNode;
+
+  beforeEach(function() {
+    subredditComponent = TestUtils.renderIntoDocument(
       <Subreddit
+        id={subreddit.id}
+        isSelected={false}
         name={subreddit.name}
-        url={subreddit.url} />
-    );
+        url={subreddit.url} />);
 
-    const subredditNode = ReactDOM.findDOMNode(subredditComponent);
+    subredditNode = ReactDOM.findDOMNode(subredditComponent);
+  });
 
+  it('displays its name', function() {
     expect(subredditNode.textContent).toContain(subreddit.name);
   });
 
   describe('onClick', function() {
+    beforeEach(function() {
+      SubredditsAction.setCurrentSubreddit = jest.genMockFn();
+      ListingsAction.requestSubredditListings = jest.genMockFn();
+
+      TestUtils.Simulate.click(subredditNode);
+    });
+
     it('triggers the ListingsAction requestSubredditListings', function() {
-    const subreddit = {
-      id: 'someKey',
-      name: 'someName',
-      url: 'someUrl'
-    };
+      expect(ListingsAction.requestSubredditListings).toBeCalledWith(subreddit.url);
+    });
 
-    const subredditComponent = TestUtils.renderIntoDocument(
-      <Subreddit
-        name={subreddit.name}
-        url={subreddit.url} />
-    );
-
-    const subredditNode = ReactDOM.findDOMNode(subredditComponent);
-
-    ListingsAction.requestSubredditListings = jest.genMockFn();
-
-    TestUtils.Simulate.click(subredditNode);
-
-    expect(ListingsAction.requestSubredditListings).toBeCalledWith(subreddit.url);
+    it('triggers the SubredditsAction setCurrentSubreddit', function() {
+      expect(SubredditsAction.setCurrentSubreddit).toBeCalledWith(subreddit.id);
     });
   });
 });

@@ -7,10 +7,13 @@ const Client = require('../utils/client');
 module.exports = Reflux.createStore({
   displayName: 'Subreddits Store',
 
-  data: {},
+  data: {
+    currentSubreddit: ''
+  },
 
   init: function() {
     this.listenTo(SubredditsAction.requestPopularSubreddits, this.getPopularSubreddits);
+    this.listenTo(SubredditsAction.setCurrentSubreddit, this.setCurrentSubreddit);
     this.listenTo(SubredditsAction.storeSubreddits, this.setSubreddits);
   },
 
@@ -20,6 +23,11 @@ module.exports = Reflux.createStore({
 
   getPopularSubreddits: function() {
     Client.getPopularSubreddits();
+  },
+
+  setCurrentSubreddit: function(subredditId) {
+    this.data.currentSubreddit = subredditId;
+    this.trigger(this.data);
   },
 
   setSubreddits: function(subreddits) {

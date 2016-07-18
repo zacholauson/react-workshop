@@ -27,13 +27,16 @@ module.exports = React.createClass({
           <ul>
             {
               subreddits.map(function(item) {
+                const isCurrentSubreddit = item.data.id === this.state.subreddits.currentSubreddit;
                 return (
                   <Subreddit
                     key={item.data.id}
+                    id={item.data.id}
+                    isSelected={isCurrentSubreddit}
                     name={item.data.display_name}
                     url={item.data.url} />
                 );
-              })
+              }.bind(this))
             }
           </ul>
         </div>

@@ -26,4 +26,16 @@ describe('SubredditsStore', function() {
       expect(SubredditsStore.trigger).toBeCalledWith(SubredditsStore.data);
     });
   });
+
+  describe('Action setCurrentSubreddit', () => {
+    it('sets the currently selected subreddit', () => {
+      var subredditId = 'someId';
+      SubredditsStore.trigger = jest.genMockFn();
+
+      SubredditsAction.setCurrentSubreddit.trigger(subredditId);
+
+      expect(SubredditsStore.data.currentSubreddit).toEqual(subredditId);
+      expect(SubredditsStore.trigger).toBeCalledWith(SubredditsStore.data);
+    });
+  });
 });
