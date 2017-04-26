@@ -14,7 +14,8 @@ export default class ListingsContainer extends React.Component {
           key={listing.data.id}
           title={listing.data.title}
           author={listing.data.author}
-          url={listing.data.url} />
+          url={listing.data.url}
+          score={listing.data.score} />
       );
     });
   }

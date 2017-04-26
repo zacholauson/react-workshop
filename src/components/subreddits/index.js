@@ -10,7 +10,8 @@ export default class SubredditsContainer extends React.Component {
           activate={this.props.setActiveSubreddit}
           key={item.data.id}
           name={item.data.display_name}
-          url={item.data.url} />
+          url={item.data.url}
+          active={item.data.url === this.props.activeSubreddit} />
       );
     });
   }
@@ -28,6 +29,7 @@ export default class SubredditsContainer extends React.Component {
 }
 
 SubredditsContainer.propTypes = {
+  activeSubreddit: PropTypes.string.isRequired,
   subreddits: PropTypes.array.isRequired,
   setActiveSubreddit: PropTypes.func.isRequired
 }
